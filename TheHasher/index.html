@@ -45,6 +45,13 @@
             </button>
           </p>
         </div>
+        <div class="field">
+          <p class="control">
+            <button class="button is-large is-error privacy_toggle">
+              Toggle Privacy
+            </button>
+          </p>
+        </div>
         <br />
         <br />
         <div id="encoding">
@@ -58,6 +65,19 @@
   </div>
 </body>
 <script>
+  $(function() {
+    var privacy = false;
+    $('.privacy_toggle').click(function() {
+      if (privacy === false) {
+        $('.text').attr('type', 'password')
+        privacy = true
+      } else {
+        $('.text').attr('type', 'text')
+        privacy = false
+      }
+    })
+  })
+
   function textToBin(text) {
     var length = text.length,
       output = [];
@@ -153,7 +173,6 @@
 
     //Get the value of input
     var text = $('.text').val();
-    console.log(text)
 
     //Run the functions
     encodeText(text);
