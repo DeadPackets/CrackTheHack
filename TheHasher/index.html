@@ -1,8 +1,165 @@
 <html>
+
 <head>
-
+  <title>TheHasher</title>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
-<body>
 
+<style>
+  pre {
+    white-space: pre-wrap;
+    /* css-3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
+  }
+</style>
+
+<body>
+  <div id="main" class="animated fadeInUp">
+    <div id="input columns">
+      <div class="column is-half is-offset-one-quarter is-centered">
+        <p class="title" style="font-size: 72px;">
+          TheHasher
+        </p>
+        <hr />
+        <div class="field">
+          <label class="label is-large">Text</label>
+          <div class="control">
+            <input class="input text is-large" type="text" placeholder="Type Stuff Here...">
+          </div>
+          <p class="help">Type the thing you want to test hashing on here!</p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <button class="button is-large is-info" onclick="startEncryption()">
+              Submit
+            </button>
+          </p>
+        </div>
+        <br />
+        <br />
+        <div id="encoding">
+        </div>
+        <div id="encryption">
+        </div>
+        <div id="hashing">
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+<script>
+  function textToBin(text) {
+    var length = text.length,
+      output = [];
+    for (var i = 0; i < length; i++) {
+      var bin = text[i].charCodeAt().toString(2);
+      output.push(Array(8 - bin.length + 1).join("0") + bin);
+    }
+    return output.join(" ");
+  }
+
+  function encodeText(text) {
+
+    $('#encoding').append('<p class="title is-large">Encoding</p>')
+
+    var stuff = [];
+
+    var b64 = "<span class='subtitle'>Base64: <pre>" + btoa(text) + "</pre> </span>";
+    stuff.push(b64)
+
+    var urlencoded = "<span class='subtitle'>URL Encoded: <pre>" + encodeURIComponent(text) + "</pre> </span>";
+    stuff.push(urlencoded)
+
+    var htmlencoded = "<span class='subtitle'>HTML Encoded: <pre>" + escape(text) + "</pre> </span>";
+    stuff.push(htmlencoded)
+
+    var hexencoded = "<span class='subtitle'>Hex Encoded: <pre>" + CryptoJS.enc.Hex.stringify(CryptoJS.enc.Utf16.parse(text)); + "</pre> </span>";
+    stuff.push(hexencoded)
+
+    var binaryencoded = "<span class='subtitle'>Binary Encoded: <pre>" + textToBin(text) + "</pre> </span>";
+    stuff.push(binaryencoded)
+
+    stuff.forEach(function(item) {
+      $('#encoding').append('<div style="padding-bottom: 20px;">' + item + '</div>')
+    })
+
+    $('#encoding').append('<hr />')
+
+  }
+
+  function encryptText(text) {
+    $('#encryption').append('<p class="title is-large">Encryption (The encryption key is "SomeSecureKey")</p>')
+
+    var stuff = [];
+
+    var aesencrypted = "<span class='subtitle'>Pure AES: <pre>" + atob(CryptoJS.AES.encrypt(text, "SomeSecureKey")) + "</pre> </span>"
+    stuff.push(aesencrypted)
+
+    var aesencrypted2 = "<span class='subtitle'>Encoded AES (Standard): <pre>" + CryptoJS.AES.encrypt(text, "SomeSecureKey") + "</pre> </span>"
+    stuff.push(aesencrypted2)
+
+    var rc4encrypted = "<span class='subtitle'>Pure RC4: <pre>" + atob(CryptoJS.RC4.encrypt(text, "SomeSecureKey")) + "</pre> </span>"
+    stuff.push(rc4encrypted)
+
+    var rc4encrypted2 = "<span class='subtitle'>Encoded RC4 (Standard): <pre>" + CryptoJS.RC4.encrypt(text, "SomeSecureKey") + "</pre> </span>"
+    stuff.push(rc4encrypted2)
+
+    stuff.forEach(function(item) {
+      $('#encryption').append('<div style="padding-bottom: 20px;">' + item + '</div>')
+    })
+
+    $('#encryption').append('<hr />')
+  }
+
+  function hashText(text) {
+    $('#hashing').append('<p class="title is-large">Hashing</p>')
+
+    var stuff = [];
+
+    var md5hash = "<span class='subtitle'>MD5: <pre>" + CryptoJS.MD5(text) + "</pre> </span>"
+    stuff.push(md5hash)
+
+    var sha1hash = "<span class='subtitle'>SHA1: <pre>" + CryptoJS.SHA1(text) + "</pre> </span>"
+    stuff.push(sha1hash)
+
+    var sha256hash = "<span class='subtitle'>SHA256: <pre>" + CryptoJS.SHA256(text) + "</pre> </span>"
+    stuff.push(sha256hash)
+
+    var sha512hash = "<span class='subtitle'>SHA512: <pre>" + CryptoJS.SHA512(text) + "</pre> </span>"
+    stuff.push(sha512hash)
+
+    stuff.forEach(function(item) {
+      $('#hashing').append('<div style="padding-bottom: 20px;">' + item + '</div>')
+    })
+
+    $('#hashing').append('<hr />')
+  }
+
+  function startEncryption() {
+    //Clear the page
+    $('#encoding').html('')
+    $('#encryption').html('')
+    $('#hashing').html('')
+
+    //Get the value of input
+    var text = $('.text').val();
+    console.log(text)
+
+    //Run the functions
+    encodeText(text);
+    encryptText(text);
+    hashText(text);
+  }
+</script>
+
 </html>
