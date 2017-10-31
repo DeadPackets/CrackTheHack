@@ -56,6 +56,9 @@
         <br />
         <br />
         <div id="results">
+          <div id="scale">
+
+          </div>
         </div>
       </div>
     </div>
@@ -75,11 +78,43 @@
     })
   })
 
+  function displayStrengthBar(data) {
+    var strength = data.score + 1
+
+    var color = '';
+
+    switch (strength) {
+
+      case 1:
+        color = 'is-danger'
+        break;
+      case 2:
+        color = 'is-warning'
+        break;
+      case 3:
+        color = 'is-info'
+        break;
+      case 4:
+        color = 'is-primary'
+        break;
+      case 5:
+        color = 'is-success'
+        break;
+      default:
+        color = 'is-link'
+        break;
+    }
+    $('#scale').html('<span class="animated fadeIn title is-large">Password Score: ' + strength + '/5</span><br /><br /></span><progress class="animated fadeIn progress is-large ' + color + '" value="' + strength + '" max="5"></progress>')
+  }
+
   function startEval() {
     var pass = $('.text').val()
 
     //Oh boy, this is gonna take some work.
-    console.log(zxcvbn(pass))
+    var result = zxcvbn(pass)
+    console.log(result)
+
+    displayStrengthBar(result)
   }
 </script>
 
