@@ -59,17 +59,79 @@
           <div id="scale">
 
           </div>
-          <div id="cracktimes">
+          <br />
+          <br />
+          <div id="cracktimes" class="animated fadeIn" style='display: none'>
+            <span class="title is-large">Cracking Times</span>
+            <hr />
+            <table class="table animated fadeIn">
+              <thead>
+                <tr>
+                  <th>
+                    Situation type
+                  </th>
+                  <th>
+                    Time needed to crack (In words)
+                  </th>
+                  <th>
+                    Time needed to crack (In seconds)
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    Offline hash cracking (fast)
+                  </th>
+                  <td id="offline_hash_fast_words">
 
+                  </td>
+                  <td id="offline_hash_fast_seconds">
+
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Offline hash cracking (slow)
+                  </th>
+                  <td id="offline_hash_slow_words">
+
+                  </td>
+                  <td id="offline_hash_slow_seconds">
+
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Online bruteforcing (fast)
+                  </th>
+                  <td id="online_bruteforce_fast_words">
+
+                  </td>
+                  <td id="online_bruteforce_fast_seconds">
+
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Online bruteforcing (slow)
+                  </th>
+                  <td id="online_bruteforce_slow_words">
+
+                  </td>
+                  <td id="online_bruteforce_slow_seconds">
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+          <hr />
           <div id="guesses">
-
           </div>
-          <div id="feedback">
+          <hr />
 
-          </div>
-          <div id="analyzer">
-
+          <div style="display: none;" id="feedback">
           </div>
         </div>
       </div>
@@ -120,7 +182,40 @@
   }
 
   function displayCrackTimes(data) {
-    var
+
+    $('#cracktimes').show()
+
+    $('#offline_hash_fast_words').html(data.crack_times_display.offline_fast_hashing_1e10_per_second)
+    $('#offline_hash_fast_seconds').html(data.crack_times_seconds.offline_fast_hashing_1e10_per_second.toLocaleString())
+
+    $('#offline_hash_slow_words').html(data.crack_times_display.offline_slow_hashing_1e4_per_second)
+    $('#offline_hash_slow_seconds').html(data.crack_times_seconds.offline_slow_hashing_1e4_per_second.toLocaleString())
+
+    $('#online_bruteforce_fast_words').html(data.crack_times_display.online_no_throttling_10_per_second)
+    $('#online_bruteforce_fast_seconds').html(data.crack_times_seconds.online_no_throttling_10_per_second.toLocaleString())
+
+    $('#online_bruteforce_slow_words').html(data.crack_times_display.online_throttling_100_per_hour)
+    $('#online_bruteforce_slow_seconds').html(data.crack_times_seconds.online_throttling_100_per_hour.toLocaleString())
+
+  }
+
+  function displayGuesses(data) {
+    $('#guesses').html('<span class="title is-medium">It would take ' + data.guesses.toLocaleString() + ' guesses to crack your password.</span>')
+  }
+
+  function displayFeedback(data) {
+    $('#feedback').show()
+    $('#feedback').html('')
+
+    if (data.feedback.suggestions.length > 0) {
+      data.feedback.suggestions.forEach(function(item) {
+        $('#feedback').append('<p>Suggestion: ' + item + ' </p>')
+      })
+    }
+
+    if (data.feedback.warning !== '') {
+      $('#feedback').append('<b><p>Warning! ' + data.feedback.warning + ' </p></b>')
+    }
   }
 
   function startEval() {
@@ -133,9 +228,8 @@
 
     displayStrengthBar(result);
     displayCrackTimes(result);
-    //displayGuesses(result);
-    //displayFeedback(result);
-    //displaySequence(result);
+    displayGuesses(result);
+    displayFeedback(result);
   }
 </script>
 
