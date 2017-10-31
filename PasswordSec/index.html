@@ -59,6 +59,18 @@
           <div id="scale">
 
           </div>
+          <div id="cracktimes">
+
+          </div>
+          <div id="guesses">
+
+          </div>
+          <div id="feedback">
+
+          </div>
+          <div id="analyzer">
+
+          </div>
         </div>
       </div>
     </div>
@@ -107,6 +119,10 @@
     $('#scale').html('<span class="animated fadeIn title is-large">Password Score: ' + strength + '/5</span><br /><br /></span><progress class="animated fadeIn progress is-large ' + color + '" value="' + strength + '" max="5"></progress>')
   }
 
+  function displayCrackTimes(data) {
+    var
+  }
+
   function startEval() {
     var pass = $('.text').val()
 
@@ -114,7 +130,12 @@
     var result = zxcvbn(pass)
     console.log(result)
 
-    displayStrengthBar(result)
+
+    displayStrengthBar(result);
+    displayCrackTimes(result);
+    //displayGuesses(result);
+    //displayFeedback(result);
+    //displaySequence(result);
   }
 </script>
 
