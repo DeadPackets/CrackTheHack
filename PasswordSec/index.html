@@ -1,0 +1,86 @@
+<html>
+
+<head>
+  <title>PasswordSec</title>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+</head>
+
+<style>
+  pre {
+    white-space: pre-wrap;
+    /* css-3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
+  }
+</style>
+
+<body>
+  <div id="main" class="animated fadeInUp">
+    <div id="input columns">
+      <div class="column is-half is-offset-one-quarter is-centered">
+        <p class="title" style="font-size: 72px;">
+          PasswordSec
+        </p>
+        <hr />
+        <div class="field">
+          <label class="label is-large">Password</label>
+          <div class="control">
+            <input class="input text is-large" type="text" placeholder="Type Stuff Here...">
+          </div>
+          <p class="help">Type your password to test its strength!</p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <button class="button is-large is-info" onclick="startEval()">
+              Submit
+            </button>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <button class="button is-large is-error privacy_toggle">
+              Toggle Privacy
+            </button>
+          </p>
+        </div>
+        <br />
+        <br />
+        <div id="results">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  $(function() {
+    var privacy = false;
+    $('.privacy_toggle').click(function() {
+      if (privacy === false) {
+        $('.text').attr('type', 'password')
+        privacy = true
+      } else {
+        $('.text').attr('type', 'text')
+        privacy = false
+      }
+    })
+  })
+
+  function startEval() {
+    var pass = $('.text').val()
+
+    //Oh boy, this is gonna take some work.
+    console.log(zxcvbn(pass))
+  }
+</script>
+
+</html>
